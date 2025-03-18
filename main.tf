@@ -1,14 +1,17 @@
-data "aws_ami" "amazon-linux-2023" {
+data "aws_ami" "ubuntu" {
   most_recent = true
-  owners      = ["amazon"]
-  filter {
-    name   = "architecture"
-    values = ["arm64"]
-  }
+
   filter {
     name   = "name"
-    values = ["al2023-ami-2023*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
 }
 
 
@@ -20,7 +23,7 @@ data "template_file" "userdata" {
 }
 
 resource "aws_instance" "tfmyec2" {
-  ami = data.aws_ami.amazon-linux-2023.id
+  ami = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   count = var.num_of_instance
   key_name = var.key_name
