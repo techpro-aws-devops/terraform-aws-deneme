@@ -6,5 +6,3 @@ sh get-docker.sh
 groupadd docker
 usermod -aG docker $USER
 newgrp docker
-systemctl start docker
-systemctl enable docker
